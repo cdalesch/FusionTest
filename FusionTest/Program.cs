@@ -90,6 +90,7 @@ namespace FusionCode
             };
         }
 
+        //normally in a data layer
         static private async Task<CustomerParts> GetParts()
         {
             CustomerParts? customerParts = null;
