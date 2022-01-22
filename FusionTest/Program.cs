@@ -51,6 +51,7 @@ namespace FusionCode
                .Where(x => x.CategoryType == _cpu)
                .OrderByDescending(x => x.Price)
                .Take(2)
+               .OrderBy(x => x.Price)
                .ToList();
 
             var noCpus = custParts.Parts
@@ -59,15 +60,14 @@ namespace FusionCode
                 .OrderBy(x => x.Price)
                 .ToList();
 
-            var reportData = expensiveCpus.Concat(noCpus)
-                .OrderBy(x => x.Price)
-                .ToList();
+            var reportData = expensiveCpus.Concat(noCpus).ToList();
 
             foreach (var report in reportData)
             {
-                totalCost += report.Price;
-                if (totalCost <= _budget)
+
+                if ((totalCost + report.Price) <= _budget)
                 {
+                    totalCost += report.Price;
                     rows++;
                     reportDetail.Add($"{report.Name}: { string.Format(_currencyFormat, report.Price) }");
                 }
