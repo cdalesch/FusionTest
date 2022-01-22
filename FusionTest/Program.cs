@@ -1,7 +1,5 @@
 ﻿using FusionTest.Models;
-using Newtonsoft.Json;
-
-
+using System.Net.Http.Headers;
 
 namespace FusionCode
 {
@@ -29,8 +27,13 @@ namespace FusionCode
         {
             try
             {
-                ShowReport(GetParts());
-            }
+                {
+                    _client.BaseAddress = new Uri(_uri);
+                    _client.DefaultRequestHeaders.Accept.Clear();
+                    _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_httpMediaType));
+
+                    ShowReport(GetParts());
+                }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
@@ -89,18 +92,15 @@ namespace FusionCode
             };
         }
 
-        static private CustomerParts GetParts()
+        static async Task<CustomerParts> GetParts()
         {
-            //client.BaseAddress = new Uri(_uri);
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_httpMediaType));
-            //return JsonConvert.DeserializeObject<CustomerParts>(client.SendAsync().);
-
-            using (StreamReader r = new StreamReader("parts.json"))
+            CustomerParts? customerParts = null;
+            var response = await _client.GetAsync(_uri);
+            if (response.IsSuccessStatusCode)
             {
-                string json = r.ReadToEnd();
-                return JsonConvert.DeserializeObject<CustomerParts>(json);
+                customerParts = await response.Content.ReadAsAsync<CustomerParts>();
             }
+            return customerParts;
         }
         #endregion
     }
