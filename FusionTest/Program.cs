@@ -43,26 +43,25 @@ namespace FusionCode
 
         static private void ShowReport(CustomerParts custParts)
         {
-            List<string> reportHeader = new() { "" }, reportDetail = new() { "" }, reportOutput = new() { "" };
+            List<string> reportHeader = new(), reportDetail = new(), reportOutput = new();
             decimal totalCost = 0;
             int rows = 0;
 
             //broken out for readability
-            var expensiveCpus = custParts.Parts
+            var reportData = custParts.Parts
                .Distinct()
                .Where(x => x.CategoryType == _cpu)
                .OrderByDescending(x => x.Price)
                .Take(2)
                .OrderBy(x => x.Price)
-               .ToList();
-
-            var noCpus = custParts.Parts
-                .Distinct()
-                .Where(x => x.CategoryType != _cpu)
-                .OrderBy(x => x.Price)
-                .ToList();
-
-            var reportData = expensiveCpus.Concat(noCpus).ToList();
+               .ToList()
+               .Concat(
+                    custParts.Parts
+                    .Distinct()
+                    .Where(x => x.CategoryType != _cpu)
+                    .OrderBy(x => x.Price)
+                    .ToList()
+                );
 
             foreach (var report in reportData)
             {
@@ -91,7 +90,7 @@ namespace FusionCode
             };
         }
 
-        static async Task<CustomerParts> GetParts()
+        static private async Task<CustomerParts> GetParts()
         {
             CustomerParts? customerParts = null;
             var response = await _client.GetAsync(_uri);
