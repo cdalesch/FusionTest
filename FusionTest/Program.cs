@@ -27,13 +27,12 @@ namespace FusionCode
         {
             try
             {
-                {
-                    _client.BaseAddress = new Uri(_uri);
-                    _client.DefaultRequestHeaders.Accept.Clear();
-                    _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_httpMediaType));
+                _client.BaseAddress = new Uri(_uri);
+                _client.DefaultRequestHeaders.Accept.Clear();
+                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_httpMediaType));
 
-                    ShowReport(GetParts());
-                }
+                ShowReport(await GetParts());
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
