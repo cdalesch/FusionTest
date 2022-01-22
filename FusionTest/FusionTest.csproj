@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="microsoft.aspnet.webapi.client" Version="5.2.7" />
-    <PackageReference Include="newtonsoft.json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

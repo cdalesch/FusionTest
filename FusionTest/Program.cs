@@ -94,10 +94,10 @@ namespace FusionCode
         {
             CustomerParts? customerParts = null;
             var response = await _client.GetAsync(_uri);
+
             if (response.IsSuccessStatusCode)
-            {
                 customerParts = await response.Content.ReadAsAsync<CustomerParts>();
-            }
+
             return customerParts;
         }
         #endregion
