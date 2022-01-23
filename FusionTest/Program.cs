@@ -7,14 +7,14 @@ namespace FusionCode
     class Program
     {
         //would normally go in a appsetting json file
-        private const string _uri = @"https://6f5c9791-a282-482e-bbe9-2c1d1d3f4c9f.mock.pstmn.io/interview/part-list";
-        private const string _httpMediaType = @"application/json";
+        private const string Uri = @"https://6f5c9791-a282-482e-bbe9-2c1d1d3f4c9f.mock.pstmn.io/interview/part-list";
+        private const string HttpMediaType = @"application/json";
         //--------------------------------------------------------
 
         private static readonly HttpClient _client = new();
-        private const string _cpu = "CPU";
-        private const string _currencyFormat = "{0:C}";
-        private const decimal _budget = 1800;
+        private const string Cpu = "CPU";
+        private const string CurrencyFormat = "{0:C}";
+        private const decimal Budget = 1800;
 
         static void Main()
         {
@@ -27,9 +27,9 @@ namespace FusionCode
         {
             try
             {
-                _client.BaseAddress = new Uri(_uri);
+                _client.BaseAddress = new Uri(Uri);
                 _client.DefaultRequestHeaders.Accept.Clear();
-                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_httpMediaType));
+                _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpMediaType));
 
                 ShowReport(await GetParts());
             }
@@ -50,7 +50,7 @@ namespace FusionCode
             //broken out for readability
             var reportData = custParts.Parts
                .Distinct()
-               .Where(x => x.CategoryType == _cpu)
+               .Where(x => x.CategoryType == Cpu)
                .OrderByDescending(x => x.Price)
                .Take(2)
                .OrderBy(x => x.Price)
@@ -58,18 +58,18 @@ namespace FusionCode
                .Concat(
                     custParts.Parts
                     .Distinct()
-                    .Where(x => x.CategoryType != _cpu)
+                    .Where(x => x.CategoryType != Cpu)
                     .OrderBy(x => x.Price)
                     .ToList()
                 );
 
             foreach (var report in reportData)
             {
-                if ((totalCost + report.Price) <= _budget)
+                if ((totalCost + report.Price) <= Budget)
                 {
                     totalCost += report.Price;
                     rows++;
-                    reportDetail.Add($"{report.Name}: { string.Format(_currencyFormat, report.Price) }");
+                    reportDetail.Add($"{report.Name}: { string.Format(CurrencyFormat, report.Price) }");
                 }
                 else
                     break;
@@ -84,7 +84,7 @@ namespace FusionCode
             {
                 "Customers Budget Report",
                 $"Total Number of Parts: {count}",
-                $"Total Parts Cost: { string.Format(_currencyFormat, cost)}",
+                $"Total Parts Cost: { string.Format(CurrencyFormat, cost)}",
                 ""
             };
         }
@@ -93,7 +93,7 @@ namespace FusionCode
         static private async Task<CustomerParts> GetParts()
         {
             CustomerParts? customerParts = null;
-            var response = await _client.GetAsync(_uri);
+            var response = await _client.GetAsync(Uri);
 
             if (response.IsSuccessStatusCode)
                 customerParts = await response.Content.ReadAsAsync<CustomerParts>();
