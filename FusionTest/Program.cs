@@ -65,7 +65,6 @@ namespace FusionCode
 
             foreach (var report in reportData)
             {
-
                 if ((totalCost + report.Price) <= _budget)
                 {
                     totalCost += report.Price;
