@@ -6,7 +6,7 @@ namespace FusionCode
 
     class Program
     {
-        //would normally go in a appsetting json file
+        //would normally go in a settings file
         private const string Uri = @"https://6f5c9791-a282-482e-bbe9-2c1d1d3f4c9f.mock.pstmn.io/interview/part-list";
         private const string HttpMediaType = @"application/json";
         private const string Cpu = "CPU";
