@@ -9,12 +9,12 @@ namespace FusionCode
         //would normally go in a appsetting json file
         private const string Uri = @"https://6f5c9791-a282-482e-bbe9-2c1d1d3f4c9f.mock.pstmn.io/interview/part-list";
         private const string HttpMediaType = @"application/json";
-        //--------------------------------------------------------
-
-        private static readonly HttpClient _client = new();
         private const string Cpu = "CPU";
         private const string CurrencyFormat = "{0:C}";
         private const decimal Budget = 1800;
+        //--------------------------------------------------------
+
+        private static readonly HttpClient _client = new();
 
         static void Main()
         {
